@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Repositories;
 
 use InvalidArgumentException;
@@ -11,6 +12,7 @@ class FileRepository extends FilesystemRepository
      * @param $path
      *
      * @throws InvalidArgumentException
+     *
      * @return mixed
      */
     public function contents($path = '')
@@ -27,6 +29,7 @@ class FileRepository extends FilesystemRepository
      * @param string $contents
      *
      * @throws InvalidArgumentException
+     *
      * @return mixed
      */
     public function update($path = '', $contents = '')
@@ -37,7 +40,7 @@ class FileRepository extends FilesystemRepository
     }
 
     /**
-     * Deletes one or multiple files
+     * Deletes one or multiple files.
      *
      * @param $path
      *
@@ -45,7 +48,7 @@ class FileRepository extends FilesystemRepository
      */
     public function delete($path)
     {
-        if ( ! is_array($path)) {
+        if (!is_array($path)) {
             $path = [$path];
         }
 
@@ -55,9 +58,9 @@ class FileRepository extends FilesystemRepository
 
         return true;
     }
-    
+
     /**
-     * Creates an empty file
+     * Creates an empty file.
      *
      * @param $path
      *
@@ -77,7 +80,7 @@ class FileRepository extends FilesystemRepository
      */
     protected function checkPath($path)
     {
-        if ($path == '') {
+        if ('' == $path) {
             throw new InvalidArgumentException('Please specify a file path.');
         }
     }

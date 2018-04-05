@@ -2,7 +2,6 @@
 
 namespace App\Helpers;
 
-
 use Crypt;
 use Illuminate\Support\Facades\Session;
 
@@ -11,7 +10,7 @@ class LoginHandler
     public function set($data)
     {
         $data = Crypt::encrypt($data);
-        \Session::set('data', $data);
+        \Session::put('data', $data);
 
         return $this;
     }
@@ -21,8 +20,8 @@ class LoginHandler
         $data   = Crypt::decrypt(Session::get('data'));
         $driver = Session::get('driver');
 
-        if ($driver === 's3') {
-            Session::set('host', sprintf('%s://%s', $data['region'], $data['bucket']));
+        if ('s3' === $driver) {
+            Session::put('host', sprintf('%s://%s', $data['region'], $data['bucket']));
             app()['config']['filesystems.cloud']    = 's3';
             app()['config']['filesystems.disks.s3'] = [
                 'driver' => 's3',
@@ -31,8 +30,8 @@ class LoginHandler
                 'region' => $data['region'],
                 'bucket' => $data['bucket'],
             ];
-        } elseif ($driver === 'ftp') {
-            Session::set('host', sprintf('%s@%s', $data['username'], $data['host']));
+        } elseif ('ftp' === $driver) {
+            Session::put('host', sprintf('%s@%s', $data['username'], $data['host']));
             app()['config']['filesystems.cloud']     = 'ftp';
             app()['config']['filesystems.disks.ftp'] = [
                 'driver'   => 'ftp',
@@ -44,6 +43,5 @@ class LoginHandler
         } else {
             throw new \RuntimeException('Unknown driver');
         }
-
     }
 }

@@ -14,11 +14,13 @@ class CleanUp extends Command
 
     /**
      * Never delete these files.
+     *
      * @var array
      */
     private $ignore = ['.gitignore'];
     /**
-     * Cleanup these storage directories
+     * Cleanup these storage directories.
+     *
      * @var array
      */
     private $dirs = ['downloads', 'uploads'];
@@ -73,13 +75,13 @@ class CleanUp extends Command
     protected function cleanup($path)
     {
         foreach ($this->fs->directories($path) as $directory) {
-            if ( ! $this->keep($directory)) {
+            if (!$this->keep($directory)) {
                 $this->fs->deleteDirectory($directory);
             }
         }
 
         foreach ($this->fs->files($path) as $file) {
-            if ( ! $this->keep($file)) {
+            if (!$this->keep($file)) {
                 $this->fs->delete($file);
             }
         }
@@ -123,6 +125,6 @@ class CleanUp extends Command
      */
     protected function keep($path)
     {
-        return $this->ignore($path) || ! $this->isOld($path);
+        return $this->ignore($path) || !$this->isOld($path);
     }
 }

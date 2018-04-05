@@ -21,7 +21,7 @@ class LoginRequest extends Request
      */
     public function rules()
     {
-        if ($this->request->get('driver') === 'ftp') {
+        if ('ftp' === $this->request->get('driver')) {
             $rules = [
                 'host'     => 'required',
                 'username' => 'required',

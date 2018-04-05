@@ -1,5 +1,6 @@
 <template>
-    <div id="loading-overlay" v-show="visible"></div>
+    <div id="loading-overlay" v-show="visible">
+    </div>
 </template>
 
 <script>

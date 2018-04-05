@@ -2,9 +2,8 @@
 
 namespace App\Helpers;
 
-
-use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use RecursiveDirectoryIterator;
 
 class Zipper
 {
@@ -15,7 +14,7 @@ class Zipper
         $this->zip = new \ZipArchive();
         $res       = $this->zip->open($path);
 
-        if ($res === true) {
+        if (true === $res) {
             $this->zip->extractTo($target);
             $this->zip->close();
 
@@ -34,7 +33,7 @@ class Zipper
 
         $this->zip->close();
 
-        if ( ! file_exists($zipPath)) {
+        if (!file_exists($zipPath)) {
             throw new \RuntimeException('Failed to create zip archive.');
         }
     }
@@ -63,5 +62,4 @@ class Zipper
             $this->zip->addFile($filePath, $relativePath);
         }
     }
-
 }

@@ -13,3 +13,9 @@ resources/views/partials/analytics.blade.php
 composer.phar
 .htaccess
 public/css/app.css
+.vagrant
+Vagrantfile
+
+*.log
+
+vagrant_playbook\.yml

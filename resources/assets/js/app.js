@@ -6,12 +6,10 @@
 
 require('./bootstrap');
 
-import Vue from 'vue'
-import App from './app.vue'
-
-import store from './store'
-
-import * as types from './store/types'
+import Vue from 'vue';
+import App from './app.vue';
+import store from './store';
+import * as types from './store/types';
 
 const vm = new Vue({
     el: '#main',

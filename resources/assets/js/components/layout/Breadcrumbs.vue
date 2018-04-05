@@ -2,15 +2,13 @@
     <div class="row">
         <div class="breadcrumbs col-md-11 col-xs-10">
             <ol class="breadcrumb">
-                <li v-for="breadcrumb in breadcrumbs"
-                    :class="{ active: isLast($index) }">
-                    <a @click="cd(($index === 0 ? '' : '/') + breadcrumb.path)"
-                       v-if="!isLast($index)">
-                        {{ breadcrumb.label }}
-                    </a>
+                <li v-for="(breadcrumb, index) in breadcrumbs" :class="{ active: isLast(index) }" v-bind:key="index">
+                    <a @click="cd((index === 0 ? '' : '/') + breadcrumb.path)" v-if="!isLast(index)">
+                            {{ breadcrumb.label }}
+                        </a>
                     <span v-else>
-                    {{ breadcrumb.label }}
-                </span>
+                        {{ breadcrumb.label }}
+                    </span>
                 </li>
             </ol>
         </div>
@@ -22,9 +20,16 @@
 
 <script type="text/babel">
     import * as types from '../../store/types'
-    import { mapActions, mapState } from 'vuex'
-
+    import {
+        mapActions,
+        mapState
+    } from 'vuex'
     export default {
+        data() {
+            return {
+                index: null,
+            }
+        },        
         methods: {
             ...mapActions({
                 cd: types.CHANGE_DIRECTORY
@@ -38,14 +43,18 @@
                 path: state => state.path
             }),
             breadcrumbs() {
-                const root = [{label: Laravel.host, path: ''}];
-
+                const root = [{
+                    label: Laravel.host,
+                    path: ''
+                }];
                 let path = '';
                 let mapItem = label => {
                     path += label + '/';
-                    return {label, path}
+                    return {
+                        label,
+                        path
+                    }
                 };
-
                 return root.concat(this.path.slice(1, -1).split('/').map(mapItem));
             }
         }

@@ -2,12 +2,11 @@
 
 namespace App\Transfer\Upload;
 
-
 use App\Helpers\Zipper;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Filesystem\FilesystemManager;
 
 class UploadTransfer
 {
@@ -61,7 +60,7 @@ class UploadTransfer
      */
     protected function generateTemp()
     {
-        $this->temp = 'uploads/' . uniqid(session_id(), true);
+        $this->temp = 'uploads/'.uniqid(session_id(), true);
     }
 
     /**
@@ -69,10 +68,10 @@ class UploadTransfer
      */
     protected function saveTempFiles($extract)
     {
-        $base = storage_path('app/' . $this->temp);
+        $base = storage_path('app/'.$this->temp);
         foreach ($this->files as $file) {
             /** @var $file UploadedFile */
-            if ($extract === true && $file->guessExtension() === 'zip') {
+            if (true === $extract && 'zip' === $file->guessExtension()) {
                 (new Zipper())->unzip($file->getRealPath(), $base);
             } else {
                 $file->move($base, $file->getClientOriginalName());
@@ -81,7 +80,7 @@ class UploadTransfer
     }
 
     /**
-     * Remove temp files
+     * Remove temp files.
      */
     protected function cleanUp()
     {
@@ -90,12 +89,13 @@ class UploadTransfer
 
     /**
      * Upload local files to remote server.
+     *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function uploadToRemote($base = null)
     {
-        $folder = $base ? $this->temp . '/' . $base : $this->temp;
-        $target = $base ? $this->path . '/' . $base : $this->path;
+        $folder = $base ? $this->temp.'/'.$base : $this->temp;
+        $target = $base ? $this->path.'/'.$base : $this->path;
 
         foreach ($this->fs->files($folder) as $file) {
             $this->fs->cloud()->put(
@@ -122,7 +122,7 @@ class UploadTransfer
             $this->fs->cloud()->makeDirectory(
                 sprintf('%s/%s', $target, $this->getBasename($dir))
             );
-            $this->uploadToRemote($base . '/' . $this->getBasename($dir));
+            $this->uploadToRemote($base.'/'.$this->getBasename($dir));
         }
     }
 
@@ -139,5 +139,4 @@ class UploadTransfer
 
         return array_pop($parts);
     }
-
 }

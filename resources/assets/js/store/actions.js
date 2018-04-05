@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 import * as api from '../api';
 import * as types from './types';
 
@@ -12,7 +13,9 @@ const basename = path => {
 
 export default {
 
-    [types.FETCH_FILES]({commit}, path) {
+    [types.FETCH_FILES]({
+        commit
+    }, path) {
         commit(types.SET_LOADING, true);
         commit(types.SET_PATH, path);
 
@@ -27,18 +30,24 @@ export default {
         });
     },
 
-    [types.FETCH_CONTENTS]({commit, dispatch, state}, path) {
+    [types.FETCH_CONTENTS]({
+        commit,
+        dispatch,
+        state
+    }, path) {
         commit(types.SET_LOADING, true);
         path = withPwd(state, path);
 
         api.getContents(path).then(response => {
 
-            if(response.download === true) {
+            if (response.download === true) {
                 const a = window.document.createElement('a');
                 a.href = 'data:application/octet-stream;base64,' + response.contents;
                 a.download = basename(path);
 
-                document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
             } else {
                 commit(types.SET_OPEN_FILE, path);
                 commit(types.SET_EDITOR_CONTENTS, response.contents);
@@ -54,7 +63,11 @@ export default {
 
     },
 
-    [types.PUT_CONTENTS]({dispatch, commit, state}, contents) {
+    [types.PUT_CONTENTS]({
+        dispatch,
+        commit,
+        state
+    }, contents) {
         commit(types.SET_LOADING, true);
 
         api.putContents(state.openFile, contents).then(() => {
@@ -67,7 +80,11 @@ export default {
         });
     },
 
-    [types.DELETE_SELECTED]({dispatch, commit, state}) {
+    [types.DELETE_SELECTED]({
+        dispatch,
+        commit,
+        state
+    }) {
         let files = state.files.filter(file => file.checked);
 
         let cleanUp = () => {
@@ -94,7 +111,11 @@ export default {
 
     },
 
-    [types.DOWNLOAD_SELECTED]({dispatch, commit, state}) {
+    [types.DOWNLOAD_SELECTED]({
+        dispatch,
+        commit,
+        state
+    }) {
         let files = state.files.filter(file => file.checked);
 
         let cleanUp = () => {
@@ -121,13 +142,19 @@ export default {
         });
     },
 
-    [types.DOWNLOAD_OPEN_FILE]({dispatch, commit, state}) {
+    [types.DOWNLOAD_OPEN_FILE]({
+        dispatch,
+        commit,
+        state
+    }) {
 
         if (state.openFile === null) return;
 
         commit(types.SET_LOADING, true);
 
-        api.download([{path: state.openFile}]).then(zip => {
+        api.download([{
+            path: state.openFile
+        }]).then(zip => {
             document.getElementById('download-frame').setAttribute('src', '/download/' + zip);
             alertify.success('Download started successfully');
             commit(types.SET_LOADING, false);
@@ -138,11 +165,16 @@ export default {
         });
     },
 
-    [types.CREATE_NEW]({dispatch, commit, state}, {type, path}) {
+    [types.CREATE_NEW]({
+        dispatch,
+        commit,
+        state
+    }, {
+        type,
+        path
+    }) {
         commit(types.SET_LOADING, true);
-
         path = withPwd(state, path);
-
         api.create(type, path).then(() => {
             alertify.success('File created');
             dispatch(types.REFRESH);
@@ -153,7 +185,14 @@ export default {
 
     },
 
-    [types.UPLOAD]({commit, state, dispatch}, {files, extract}) {
+    [types.UPLOAD]({
+        commit,
+        state,
+        dispatch
+    }, {
+        files,
+        extract
+    }) {
         commit(types.SET_LOADING, true);
 
         return api.upload(files, state.path, extract).then(() => {
@@ -161,7 +200,7 @@ export default {
             commit(types.TOGGLE_MODAL, 'upload');
             dispatch(types.REFRESH);
         }).catch(response => {
-            if(response.status === 422) {
+            if (response.status === 422) {
                 alertify.error('The uploaded file is too large');
             } else {
                 alertify.error('Failed to upload files');
@@ -171,34 +210,54 @@ export default {
 
     },
 
-    [types.TOGGLE_ALL]({commit, state}, newState) {
+    [types.TOGGLE_ALL]({
+        commit,
+        state
+    }, newState) {
         commit(types.SET_ALL_SELECTED, newState);
         state.files.forEach(file => {
-            commit(types.TOGGLE_FILE, {file, newState});
+            commit(types.TOGGLE_FILE, {
+                file,
+                newState
+            });
         });
     },
 
-    [types.CHANGE_DIRECTORY]({state, dispatch}, path) {
+    [types.CHANGE_DIRECTORY]({
+        state,
+        dispatch
+    }, path) {
         dispatch(types.FETCH_FILES, path);
     },
 
-    [types.CHANGE_DIRECTORY_RELATIVE]({state, dispatch}, path) {
+    [types.CHANGE_DIRECTORY_RELATIVE]({
+        state,
+        dispatch
+    }, path) {
         path = state.path += path + '/';
         dispatch(types.CHANGE_DIRECTORY, path);
     },
 
-    [types.REFRESH]({state, dispatch}) {
+    [types.REFRESH]({
+        state,
+        dispatch
+    }) {
         dispatch(types.FETCH_FILES, state.path);
     },
 
-    [types.LEVEL_UP]({dispatch, state}) {
+    [types.LEVEL_UP]({
+        dispatch,
+        state
+    }) {
         let path = state.path.replace(/^\/|\/$/g, '').split('/');
         path.pop();
 
         dispatch(types.CHANGE_DIRECTORY, path.length > 0 ? '/' + path.join('/') + '/' : '/');
     },
 
-    [types.UPDATE_FILELIST]({commit}, files) {
+    [types.UPDATE_FILELIST]({
+        commit
+    }, files) {
         commit(types.SET_LOADING, false);
         commit(types.SET_ALL_SELECTED, false);
         commit(types.SET_FILELIST, files);

@@ -1,4 +1,4 @@
-
+/*jshint esversion: 6 */
 window._ = require('lodash');
 
 /**
@@ -8,7 +8,6 @@ window._ = require('lodash');
  */
 
 window.$ = window.jQuery = require('jquery');
-require('bootstrap-sass');
 
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces
@@ -24,12 +23,8 @@ require('vue-resource');
  * the outgoing requests issued by this application. The CSRF middleware
  * included with Laravel will automatically verify the header's value.
  */
-
-Vue.http.interceptors.push((request, next) => {
-    request.headers.set('X-CSRF-TOKEN', Laravel.csrfToken);
-
-    next();
-});
+import axios from 'axios';
+axios.defaults.headers.common['X-CSRF-TOKEN'] = window.csrfToken;
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

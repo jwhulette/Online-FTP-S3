@@ -24,7 +24,7 @@ class UploadRequest extends FormRequest
     public function rules()
     {
         return [
-            'files.*' => 'max:' . env('MAX_UPLOAD_SIZE', 5000)
+            'files.*' => 'max:'.env('MAX_UPLOAD_SIZE', 5000),
         ];
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\FileRepository;
 use Illuminate\Http\Request;
+use App\Repositories\FileRepository;
 
 class FileController extends Controller
 {
@@ -22,7 +22,7 @@ class FileController extends Controller
         $path = $request->get('path', '');
 
         $contents = $this->file->contents($path);
-        $isBinary = mb_detect_encoding($contents) === false;
+        $isBinary = false === mb_detect_encoding($contents);
 
         if ($isBinary) {
             $contents = base64_encode($contents);

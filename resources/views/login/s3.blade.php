@@ -1,24 +1,28 @@
 @include('helpers/input', [
-    'id' => 'key',
+    'id'    => 'key',
     'label' => 'S3 Key',
-    'type' => 'text'
+    'type'  => 'text',
+    'value' => env('AWS_KEY')
 ])
 @include('helpers/input', [
-    'id' => 'secret',
+    'id'    => 'secret',
     'label' => 'S3 Secret',
-    'type' => 'text'
+    'type'  => 'text',
+    'value' => env('AWS_SECRET')
 ])
 @include('helpers/input', [
-    'id' => 'region',
+    'id'    => 'region',
     'label' => 'S3 Region',
-    'type' => 'text',
-    'value' => 'eu-central-1'
+    'type'  => 'text',
+    'value' => 'us-east-1'
 ])
 @include('helpers/input', [
-    'id' => 'bucket',
+    'id'    => 'bucket',
     'label' => 'S3 Bucket name',
-    'type' => 'string'
+    'type'  => 'string',
+    'value' => env('AWS_BUCKET')
 ])
 <div class="form-group">
-    <button type="submit" class="btn btn-primary" id="btn-login">Login</button>
+
+    <button type="submit" class="btn btn-primary btn-login">Login</button>
 </div>

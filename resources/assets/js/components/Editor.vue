@@ -3,34 +3,32 @@
         <div id="editor">{{ contents }}</div>
         <div id="hide">
             <button type="button" class="btn btn-default btn-sm" @click="hide" title="Hide editor">
-                <span class="glyphicon glyphicon-arrow-right"></span>
-            </button>
+                    <span class="glyphicon glyphicon-arrow-right"></span>
+                </button>
         </div>
         <div id="statusbar">
-            <button type="button"
-                    class="btn btn-primary"
-                    title="Save file"
-                    @click="save"
-                    v-show="openFile !== null"
-            >
-                <span class="glyphicon glyphicon-floppy-disk"></span>
-                Save file
-            </button>
-            <button type="button"
-                    class="btn btn-default"
-                    title="Download"
-                    @click="download"
-                    v-show="openFile !== null"
-            >
-                <span class="glyphicon glyphicon-download"></span>
-            </button>
+            <button type="button" class="btn btn-primary" title="Save file" @click="save" v-show="openFile !== null">
+                    <span class="glyphicon glyphicon-floppy-disk"></span>
+                    Save file
+                </button>
+            <button type="button" class="btn btn-default" title="Download" @click="download" v-show="openFile !== null">
+                    <span class="glyphicon glyphicon-download"></span>
+                </button>
         </div>
     </div>
 </template>
 
 <script type="text/babel">
-    import * as types from '../store/types'
-    import { mapActions, mapState } from 'vuex'
+    import * as types from '../store/types';
+    import ace from 'ace-builds';
+    import 'ace-builds/src-noconflict/ext-language_tools.js'
+    import 'ace-builds/src-noconflict/ext-modelist.js'
+    import 'ace-builds/src-noconflict/theme-tomorrow_night.js'
+
+    import {
+        mapActions,
+        mapState
+    } from 'vuex'
     export default {
         data() {
             return {
@@ -58,14 +56,14 @@
             },
             openFile(newValue, oldValue) {
                 if (oldValue !== newValue && newValue !== null) {
-                    let modelist = window.ace.require('ace/ext/modelist');
+                    let modelist = ace.require('ace/ext/modelist');
                     let mode = modelist.getModeForPath(newValue).mode;
                     this.editor.getSession().setMode(mode);
                 }
             }
         },
         mounted() {
-            this.editor = window.ace.edit('editor');
+            this.editor = ace.edit('editor');
             this.editor.setOptions({
                 theme: 'ace/theme/tomorrow_night',
                 highlightActiveLine: true,
@@ -73,7 +71,6 @@
                 enableBasicAutocompletion: true,
                 tabSize: 4
             });
-
             this.editor.$blockScrolling = Infinity;
         },
         destroyed() {
@@ -98,7 +95,6 @@
         font-size: 15px;
         line-height: 1.6;
     }
-
     #statusbar {
         position: absolute;
         left: 0;
@@ -108,7 +104,6 @@
         z-index: 600;
         padding: 10px;
     }
-
     #hide {
         position: absolute;
         top: 50%;
@@ -116,7 +111,6 @@
         transform: translate(-50%, 0);
         z-index: 2000;
     }
-
     @media screen and (max-width: 880px) {
         #hide {
             transform: translate(10%, 0);

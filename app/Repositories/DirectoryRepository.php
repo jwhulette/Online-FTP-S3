@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Repositories;
 
 class DirectoryRepository extends FilesystemRepository
@@ -14,7 +15,7 @@ class DirectoryRepository extends FilesystemRepository
 
     public function delete($path)
     {
-        if ( ! is_array($path)) {
+        if (!is_array($path)) {
             $path = [$path];
         }
 
@@ -26,7 +27,7 @@ class DirectoryRepository extends FilesystemRepository
     }
 
     /**
-     * Creates an empty directory
+     * Creates an empty directory.
      *
      * @param $path
      *
@@ -49,7 +50,7 @@ class DirectoryRepository extends FilesystemRepository
         usort($contents, function ($a, $b) {
             // Sort by type
             $c = strcmp($a['type'], $b['type']);
-            if ($c !== 0) {
+            if (0 !== $c) {
                 return $c;
             }
 
@@ -82,7 +83,6 @@ class DirectoryRepository extends FilesystemRepository
      * Format bytes as human readable filesize.
      *
      * @param     $size
-     *
      * @param int $precision
      *
      * @return string
@@ -94,9 +94,9 @@ class DirectoryRepository extends FilesystemRepository
             $base = log($size) / log(1024);
             $suffixes = array(' bytes', ' KB', ' MB', ' GB', ' TB');
 
-            return round(pow(1024, $base - floor($base)), $precision) . $suffixes[floor($base)];
+            return round(pow(1024, $base - floor($base)), $precision).$suffixes[floor($base)];
         } else {
-            return $size . ' bytes';
+            return $size.' bytes';
         }
     }
 }

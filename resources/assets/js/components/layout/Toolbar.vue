@@ -4,29 +4,28 @@
             <div class="col-md-10 col-xs-10">
                 <div class="btn-group" role="group">
                     <button @click.prevent="toggleModal('upload')" type="button" class="btn btn-primary">
-                        Upload
-                    </button>
+                            Upload
+                        </button>
                     <button @click.prevent="download" type="button" class="btn btn-primary">
-                        Download
-                    </button>
+                            Download
+                        </button>
                 </div>
                 <div class="btn-group" role="group">
                     <button @click.prevent="toggleModal('create')" type="button" class="btn btn-default">
-                        Create
-                    </button>
+                            Create
+                        </button>
                 </div>
                 <div class="btn-group" role="group">
                     <button @click.prevent="refresh" type="button" class="btn btn-default">
-                        Refresh
-                    </button>
+                            Refresh
+                        </button>
                 </div>
             </div>
             <div class="col-md-2 col-xs-2 text-right">
                 <div class="btn-group" role="group">
-                    <button @click.prevent="toggleModal('confirmDelete')" type="button" class="btn btn-danger"
-                            :class="{disabled: ! hasSelectedFiles}">
-                        Delete
-                    </button>
+                    <button @click.prevent="toggleModal('confirmDelete')" type="button" class="btn btn-danger" :class="{disabled: ! hasSelectedFiles}">
+                            Delete
+                        </button>
                 </div>
             </div>
         </div>
@@ -35,8 +34,11 @@
 
 <script type="text/babel">
     import * as types from '../../store/types'
-    import { mapActions, mapState } from 'vuex'
-
+    import {
+        mapActions,
+        mapState
+    } from 'vuex'
+    
     export default {
         methods: {
             ...mapActions({
@@ -71,7 +73,7 @@
             border-radius: 4px !important;
             margin: 2px 0;
         }
-        .toolbar > div {
+        .toolbar>div {
             width: 100% !important;
         }
     }

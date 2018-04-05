@@ -3,8 +3,8 @@ import Vue from 'vue'
 
 export default {
 
-    [types.SET_LOADING] (state, isLoading) {
-        state.isLoading = isLoading
+    [types.SET_LOADING](state, isLoading) {
+        state.isLoading = isLoading;
     },
 
     [types.SET_FILELIST](state, files) {
@@ -28,7 +28,10 @@ export default {
         state.allSelected = newState;
     },
 
-    [types.TOGGLE_FILE](state, {file, newState}) {
+    [types.TOGGLE_FILE](state, {
+        file,
+        newState
+    }) {
         if (typeof newState === 'undefined') {
             newState = !file.checked;
         }

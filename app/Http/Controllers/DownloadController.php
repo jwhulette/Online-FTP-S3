@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Zipper;
+use Illuminate\Http\Request;
 use App\Transfer\Download\DownloadTransfer;
 use Illuminate\Filesystem\FilesystemManager;
-use Illuminate\Http\Request;
 
 class DownloadController extends Controller
 {
@@ -27,6 +27,7 @@ class DownloadController extends Controller
     public function download(Request $request)
     {
         $file = preg_replace('/[^a-zA-Z0-9]/', '', $request->zip);
-        return response()->download(storage_path('app/downloads/' . $file . '.zip'), str_random() . '.zip');
+
+        return response()->download(storage_path('app/downloads/'.$file.'.zip'), str_random().'.zip');
     }
 }

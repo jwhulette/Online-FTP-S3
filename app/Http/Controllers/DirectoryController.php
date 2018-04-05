@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
-use App\Repositories\DirectoryRepository;
 use Illuminate\Http\Request;
+use App\Repositories\DirectoryRepository;
 
 class DirectoryController extends Controller
 {
@@ -13,20 +12,35 @@ class DirectoryController extends Controller
      */
     private $directory;
 
+    /**
+     * __construct.
+     *
+     * @param DirectoryRepository $directory
+     */
     public function __construct(DirectoryRepository $directory)
     {
         $this->directory = $directory;
     }
 
+    /**
+     * List directorys.
+     *
+     * @param Request $request
+     */
     public function index(Request $request)
     {
         $path = $request->get('path', '/');
 
         return [
-            'listing' => $this->directory->listing($path)
+            'listing' => $this->directory->listing($path),
         ];
     }
 
+    /**
+     * Create directroy.
+     *
+     * @param Request $request
+     */
     public function create(Request $request)
     {
         $path = $request->get('path', '');
@@ -36,10 +50,15 @@ class DirectoryController extends Controller
         ], 201);
     }
 
+    /**
+     * Delete directory.
+     *
+     * @param Request $request
+     */
     public function destroy(Request $request)
     {
         $path = $request->input('path', null);
-        
+
         $this->directory->delete($path);
     }
 }

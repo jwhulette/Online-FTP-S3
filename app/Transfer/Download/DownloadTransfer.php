@@ -2,10 +2,9 @@
 
 namespace App\Transfer\Download;
 
-
-use App\Repositories\DirectoryRepository;
 use App\Helpers\Zipper;
 use Illuminate\Filesystem\Filesystem;
+use App\Repositories\DirectoryRepository;
 use Illuminate\Filesystem\FilesystemManager;
 
 class DownloadTransfer
@@ -19,14 +18,17 @@ class DownloadTransfer
      * @var string
      */
     protected $temp;
+
     /*
      * @var string
      */
     protected $zip;
+
     /**
      * @var Filesystem
      */
     private $fs;
+
     /**
      * @var Zipper
      */
@@ -72,13 +74,14 @@ class DownloadTransfer
 
     /**
      * Zip all downloaded files.
+     *
      * @throws \RuntimeException
      */
     protected function createZip()
     {
         $this->zip = str_random();
-        $zipPath   = storage_path('app/downloads/' . $this->zip . '.zip');
-        $rootPath  = storage_path('app/' . $this->temp);
+        $zipPath   = storage_path('app/downloads/'.$this->zip.'.zip');
+        $rootPath  = storage_path('app/'.$this->temp);
 
         $this->zipper->zipDirectory($rootPath, $zipPath);
     }
@@ -91,7 +94,7 @@ class DownloadTransfer
      */
     protected function createTempDir()
     {
-        $this->temp = 'downloads/' . uniqid(session_id(), true);
+        $this->temp = 'downloads/'.uniqid(session_id(), true);
 
         $this->fs->makeDirectory($this->temp);
 
@@ -107,7 +110,7 @@ class DownloadTransfer
     protected function downloadDirectory($directory, $filter = null)
     {
         // Make sure it's absolute to the current server root
-        $directory = '/' . $directory;
+        $directory = '/'.$directory;
 
         foreach ($this->dirRepo->listing($directory) as $entry) {
             // Skip this entry if a filter is set and the file does not match it
@@ -115,11 +118,11 @@ class DownloadTransfer
                 continue;
             }
 
-            if ($entry['type'] === 'file') {
+            if ('file' === $entry['type']) {
                 $this->downloadFile($entry);
             }
 
-            if ($entry['type'] === 'dir') {
+            if ('dir' === $entry['type']) {
                 $this->createLocalDirectory($entry['path']);
                 $this->downloadDirectory($entry['path']);
             }
@@ -146,7 +149,7 @@ class DownloadTransfer
     protected function downloadFile($entry)
     {
         $this->fs->put(
-            $this->temp . '/' . $entry['path'],
+            $this->temp.'/'.$entry['path'],
             $this->fs->cloud()->read($entry['path'])
         );
     }
@@ -156,7 +159,7 @@ class DownloadTransfer
      */
     protected function createLocalDirectory($path)
     {
-        $this->fs->makeDirectory($this->temp . '/' . $path);
+        $this->fs->makeDirectory($this->temp.'/'.$path);
     }
 
     /**
@@ -166,5 +169,4 @@ class DownloadTransfer
     {
         $this->fs->deleteDirectory($this->temp);
     }
-
 }

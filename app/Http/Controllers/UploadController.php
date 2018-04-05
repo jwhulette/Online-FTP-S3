@@ -6,7 +6,6 @@ use App\Helpers\Zipper;
 use App\Http\Requests\UploadRequest;
 use App\Transfer\Upload\UploadTransfer;
 use Illuminate\Filesystem\FilesystemManager;
-use Illuminate\Http\Request;
 
 class UploadController extends Controller
 {
@@ -14,9 +13,9 @@ class UploadController extends Controller
     {
         $files = $request->hasFile('files') ? $request->allFiles()['files'] : [];
         $path  = $request->get('path', '');
-        $extract  = (bool)$request->get('extract', false);
+        $extract  = (bool) $request->get('extract', false);
 
-        if(count($files) < 1) {
+        if (count($files) < 1) {
             return response('No files received', 500);
         }
 

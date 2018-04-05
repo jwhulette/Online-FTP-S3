@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\LoginHandler;
 use App\Http\Requests;
+use App\Helpers\LoginHandler;
 use Aws\S3\Exception\S3Exception;
-use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Session\SessionManager;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Filesystem\FilesystemManager;
 
 class SessionController extends Controller
 {
@@ -19,12 +19,16 @@ class SessionController extends Controller
     public function __construct(SessionManager $session)
     {
         $this->session = $session;
+
+        if (!extension_loaded('ftp')) {
+            throw new \FtpException('FTP extension is not loaded!');
+        }
     }
 
     public function login(Requests\LoginRequest $request, FilesystemManager $fs)
     {
         $data = $this->getData($request);
-        $this->session->set('driver', $request->get('driver', 'ftp'));
+        $this->session->put('driver', $request->get('driver', 'ftp'));
 
         $login = new LoginHandler();
         $login->set($data)->apply();
@@ -42,7 +46,7 @@ class SessionController extends Controller
             return $this->error($e);
         }
 
-        $this->session->set('loggedIn', true);
+        $this->session->put('loggedIn', true);
 
         return redirect('/');
     }
